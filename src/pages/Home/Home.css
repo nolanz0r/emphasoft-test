@@ -1,0 +1,9 @@
+.home-loading {
+  font-size: 18px;
+  font-weight: 700;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+

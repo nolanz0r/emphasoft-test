@@ -1,0 +1,27 @@
+.navbar {
+  width: 100vw;
+  height: 80px;
+  border-bottom: 4px solid var(--secondary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--main);
+}
+
+.navbar-inner {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.navbar-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and (max-width: 1120px) {
+  .navbar {
+    height: 60px;
+  }
+}

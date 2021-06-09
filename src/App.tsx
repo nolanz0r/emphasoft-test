@@ -1,26 +1,49 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { FC, useEffect } from "react";
+import { Dispatch } from "redux";
+import { useSelector, useDispatch } from "react-redux";
+import { Redirect, Route, Switch, useHistory } from "react-router-dom";
 
-function App() {
+import { setAuthToken } from "./core/axios";
+import { Home } from "./pages/Home";
+import { Login } from "./pages/Login";
+import { logoutAction, setUserAction } from "./redux/actions/auth";
+import { Navbar } from "./components/Navbar";
+
+import "./styles/App.css";
+
+export const App: FC = () => {
+  const dispatch = useDispatch<Dispatch<any>>();
+  const { loggedIn } = useSelector((state: any) => state.auth);
+  const history = useHistory();
+
+  const logoutHandler = () => {
+    dispatch(logoutAction(history));
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setAuthToken(token);
+      dispatch(setUserAction());
+    }
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      {loggedIn ? (
+        <>
+          <Navbar onClick={logoutHandler} />
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Redirect from="*" to="/" />
+          </Switch>
+        </>
+      ) : (
+        <Switch>
+          <Route path="/login" component={Login} />
+          <Redirect from="*" to="/login" />
+        </Switch>
+      )}
     </div>
   );
-}
-
-export default App;
+};
